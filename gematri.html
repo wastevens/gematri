@@ -1,0 +1,326 @@
+<html>
+<form>
+<input type="text" id="word" />
+<input type="button" onclick="gematri()" value="Calculate"/>
+<div id="display"></div>
+
+<script>
+
+var sefirot = [
+	{
+        name: "Keter, Foremost of the Sephirot",
+        meaning: "Crown; Perfected Unity",
+		inverted_name: "Thaumiel, Qliphoth of Keter",
+		inverted_meaning: "Duality, Disunity, Division; Spirtual Pride and Arrogance",
+	},
+	{
+        name: "Chochmah, Uppermost of the Right Sephirot",
+        meaning: "Wisdom, Art;  The Creative Process",
+		inverted_name: "Ghagiel, Qliphoth of Chochmah",
+		inverted_meaning: "Illusions, Deceptions; Egotism that prefers lies to truth",
+	},
+	{
+        name: "Binah, Uppermost of the Left Sephirot",
+        meaning: "Understanding, Contemplation, Learning, Acceptance",
+		inverted_name: "Sathariel, Qliphoth of Binah",
+		inverted_meaning: "Materialism, Greed, Envy; Blindness to the spiritual",
+	},
+	{
+        name: "Chesed, Body of the Right Sephirot",
+        meaning: "Love, Kindness; Mercy and Unmerited Grace",
+		inverted_name: "Gamchicoth, Qliphoth of Chesed",
+		inverted_meaning: "Slothful Tolerance; Unwisely Indulgent; The Spoiled Child",
+	},
+	{
+        name: "Gevurah, Body of the Left Sephirot",
+        meaning: "Righteous Judgement, Awe, Limitations; Elemental Flame",
+		inverted_name: "Golachab, Qliphoth of Gevurah",
+		inverted_meaning: "Radicalism and Tyranny; All-Consuming Destruction"
+		
+	},
+	{
+        name: "Tiferet, Central Body of the Sephirot",
+        meaning: "Beauty, Balance, and Miracles; Glory and Light",
+		inverted_name: "Thagirion, Qliphoth of Tiferet",
+		inverted_meaning: "Agitation and Peace-breaker; Advocacy of Evil Causes"
+	},
+	{
+        name: "Netzach, Right Leg of the Sephirot",
+        meaning: "Eternal Victory; Endurance in Opposition; Patience; The Power to Overcome",
+		inverted_name: "Harab Serapel, Qliphoth of Netzach",
+		inverted_meaning: "Impatience, Impulsive Actions; Unrestrained Passion; Frenzy and Panic"
+	},
+	{
+        name: "Hod, Left Leg of the Sephirot",
+        meaning: "Splendor; Submission to Superiors; Rituals; Music and Dance",
+		inverted_name: "Samael, Qliphoth of Hod",
+		inverted_meaning: "Barren Wastelands; Failed Creation; Silence and Inaction in the face of Evil",
+	},
+	{
+        name: "Yesod, Balance of the Sephirot",
+        meaning: "Foundation; The Distribution of Divine Light; Sex and Procreation",
+		inverted_name: "Gamaliel, Qliphoth of Yesod",
+		inverted_meaning: "Perversion; Abuse of Station; Withholding Gifts and Needed Knowledge",
+	},
+	{
+        name: "Malkuth, Sephirot of the Creation",
+        meaning: "Earhtly Kingship; The Material World; The Order of Creation",
+		inverted_name: "Nehemoth, Qliphoth of Malkuth",
+		inverted_meaning: "Rejection and Rejecting; Spurned and Spurning; Unsated and Insatable"
+	}
+]
+
+var tarot = [
+	{
+        name: "The Fool",
+        meaning: "New beginnings, Faith, Good Fortune, Naivety",
+		inverted_name: "The Fool Reversed",
+		inverted_meaning: "Cynicism, Despair, Lack of Options"
+	},
+	{
+        name: "The Magician",
+        meaning: "Communication, The Will to Power, Innovation",
+		inverted_name: "The Magician Reversed",
+		inverted_meaning: "False Promise, Overconfidence, Deception"
+	},
+	{
+        name: "The High Priestess",
+        meaning: "Secrets, Mystery, Intuition, Making the Impossible Possible",
+		inverted_name: "The High Priestess Reversed",
+		inverted_meaning: "Denial of Intuition and Unconcious Self, Useless Questions"
+	},
+	{
+        name: "The Empress",
+        meaning: "Family and Famial Affection, Sufficient Abundence, Fertility",
+		inverted_name: "The Empress Reversed",
+		inverted_meaning: "Neglect, Affection Presupposed, Poverty"
+	},
+	{
+        name: "The Emperor",
+        meaning: "Leadership, Organization, Maturity, Stability and Strength",
+		inverted_name: "The Emperor Reversed",
+		inverted_meaning: "Childishness, Unfitness to Lead, Chaos; A Foundation of Sand"
+	},
+	{
+        name: "The Hierophant",
+        meaning: "Organizations, Rituals, Traditions, Kindness and Charity to Strangers",
+		inverted_name: "The Hierophant Reversed",
+		inverted_meaning: "Blind Adherence to Tradition, Hypocrisy, Parasitism"
+	},
+	{
+        name: "The Lovers",
+        meaning: "Relationships, Friendships, Completing and Being Completed By Another",
+		inverted_name: "The Lovers Reversed",
+		inverted_meaning: "Dissatisfaction with Others, Bad Decisions, Self-Imposed Exile"
+	},
+	{
+        name: "The Chariot",
+        meaning: "Drive To Victory, Determination, Indomitable Will",
+		inverted_name: "The Chariot Reversed",
+		inverted_meaning: "Defeat, Capitulation, Fatalist Apathy"
+	},
+	{
+        name: "Strength",
+        meaning: "Courage, Passion, Physical and Mental Prowess",
+		inverted_name: "Strength Reversed",
+		inverted_meaning: "Cowardice, Timidity, Impatience, Group-Think"
+	},
+	{
+        name: "The Hermit",
+        meaning: "Meditation and Introspection; Wisdom From Experience",
+		inverted_name: "The Hermit Reversed",
+		inverted_meaning: "Paranoid Isolation, Withdrawl, Escapism"
+	},
+	{
+        name: "Wheel of Fortune",
+        meaning: "Good Fortune, Predestionation; The Influence of Higher Powers",
+		inverted_name: "Wheel of Fortune Reversed",
+		inverted_meaning: "Chaos, Herald of Disaster, The Inevitability of Fate"
+	},
+	{
+        name: "Justice",
+        meaning: "Legal and Spirtual Law, Truth, Seeking Balance, Impartiality",
+		inverted_name: "Justice Reversed",
+		inverted_meaning: "Injustice and Imbalance; Lawbreaking, Deception"
+	},
+	{
+        name: "The Hanged Man",
+        meaning: "Life in Transition, Power in Reserve",
+		inverted_name: "The Hanged Man Reversed",
+		inverted_meaning: "Stubbornness, Selfishness; Refusing to Committ"
+	},
+	{
+        name: "Death",
+        meaning: "Herald of Transformations, Needed but Feared and Hated",
+		inverted_name: "Death Reversed",
+		inverted_meaning: "Stagnation, Denial of Emotion, Life without Living"
+	},
+	{
+        name: "Temperance",
+        meaning: "Balance; Synthesizing the New with the Old",
+		inverted_name: "Temperance Reversed",
+		inverted_meaning: "Imbalance, Discarding Without Consideration, Unwise Compromise"
+	},
+	{
+        name: "The Devil",
+        meaning: "Command over Primal Needs and Fears; Temptation, Addiction and Compulsion",
+		inverted_name: "The Devil Reversed",
+		inverted_meaning: "Succumbing to Temptation; Guilt, Desire"
+	},
+	{
+        name: "The Tower",
+        meaning: "Disaster, Shattering of the Old to Reveal the Foundation",
+		inverted_name: "The Tower Reversed",
+		inverted_meaning: "Storms Weathered; Rotten Foundations Remain Hidden"
+	},
+	{
+        name: "The Star",
+        meaning: "Hope, Optimism, Joy, Questions Answered, Inspiration",
+		inverted_name: "The Star Reversed",
+		inverted_meaning: "False Hope, Confusion, Disillusion"
+	},
+	{
+        name: "The Moon",
+        meaning: "Illusions, Fantasies; Things Desired and Feared",
+		inverted_name: "The Moon Reversed",
+		inverted_meaning: "Self-Deception, Ignorance, Depression and Anxiety"
+	},
+	{
+        name: "The Sun",
+        meaning: "Success, Warmth, Simple Pleasures",
+		inverted_name: "The Sun Reversed",
+		inverted_meaning: "Opposition and Failure, Blindness, Terror"
+	},
+	{
+        name: "Judgement",
+        meaning: "Responcibility, Leadership, Punishment and Vengence, Speaking Truth to Power",
+		inverted_name: "Judgement Reversed",
+		inverted_meaning: "Disproportionate Punishment, Merciless Retribution, Abeting Injustice"
+	},
+	{
+        name: "The World",
+        meaning: "Fulfillment, Challenge, the Laurels of Victory",
+		inverted_name: "The World Reversed",
+		inverted_meaning: "Favoring Comfort Over Challenge; Inability to Complete Projects"
+	},	
+]
+
+var elements = [
+	{
+        name: "Fire",
+        meaning: "Enthusiasm; drive to express self; faith; the spirtual world",
+		inverted_name: "Ash",
+		inverted_meaning: "Apathy; depression; cynicism; shallow materialism"
+	},
+	{
+        name: "Air",
+        meaning: "Communication; socialization; conceptualization; the intellectual world",
+		inverted_name: "Darkness",
+		inverted_meaning: "Silence; secrets; willful ignorance"
+	},
+	{
+        name: "Earth",
+        meaning: "Practicality; caution; the material world",
+		inverted_name: "Dust",
+		inverted_meaning: "Frivolity; recklessness; thanotic death-drive"
+	},
+	{
+        name: "Water",
+        meaning: "Emotion; empathy; sensitivity; the emotional world",
+		inverted_name: "Salt",
+		inverted_meaning: "Disdain; selfish; aloof; driven by neccesity",
+	},
+]
+
+var celestial = [
+	{
+        name: "Luna",
+        meaning: "Unconcious drives; hesitance and uncertainty; variability and adaptability",
+	},
+	{
+        name: "Mercury",
+        meaning: "Communication; rationality and reasoning; mutual understanding and diplomacy",
+	},
+	{
+        name: "Venus",
+        meaning: "Harmony; resilience; beauty; sympathy; eros and mania",
+	},
+	{
+        name: "Sol",
+        meaning: "Drive to express oneself; wisdom and self-awareness; healthy and vitality",
+	},
+	{
+        name: "Mars",
+        meaning: "Self-confidence and pride; martial prowess; discipline; loyal and dutiful",
+	},
+	{
+        name: "Jupiter",
+        meaning: "Greatness; fortune; education; rulers and leadership; societal structures",
+	},
+	{
+        name: "Saturn",
+        meaning: "Ethics; civility; nobility; focus and precision; balance and boundaries",
+	}
+]
+
+var sources = [
+	sefirot, //10
+	tarot, //22
+	elements, //4
+	celestial,
+]
+
+function gematri() {
+    var word = document.getElementById("word").value;
+	var value = valueOf(word);
+	
+	var now = new Date();
+	var date = now.getDate();
+	var month = now.getMonth();
+	var year = now.getFullYear();
+	var timeValue = date.toString() + month.toString() + year.toString();
+	
+	var message = "<b>Primary Influences</b><br>";
+	for(var i=0;i<sources.length;i++) {
+		message += messageOf(value, sources[i]) + "<br>";
+	}
+	message += "<br><b>Current Influences</b><br>"
+	for(var i=0;i<sources.length;i++) {
+		message += messageOf(value + parseInt(timeValue), sources[i]) + "<br>";
+	}
+	
+	document.getElementById("display").innerHTML = message;
+}
+
+function messageOf(value, source) {
+	var meaning = meaningOf(value, source);
+	
+	if(meaning.inverted) {
+		if(meaning.inverted_name && meaning.inverted_meaning) {
+			return "<b>" + meaning.inverted_name + "</b> : " + meaning.inverted_meaning;
+		}
+	}
+	
+	return "<b>" + meaning.name + "</b> : " + meaning.meaning;
+}
+
+function meaningOf(value, source) {
+    var meaning = source[value % source.length];
+	var inverted = Math.floor(value / source.length) % 2;
+	if(inverted) {
+		meaning.inverted = true;
+	}
+	return meaning;
+}
+
+function valueOf(word) {
+  word = word.toLowerCase();
+  var toReturn = 0;
+  for(var i=0;i<word.length;i++) {
+      toReturn += (word[i]).charCodeAt(0) - 96;
+  }
+  return toReturn;
+}
+
+</script>
+</html>
